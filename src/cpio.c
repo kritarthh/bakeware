@@ -1,9 +1,10 @@
-#include "bakeware.h"
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
+
+#include "bakeware.h"
 
 #define CPIO_MAGIC 0x070701 // CPIO newc format
 #define CPIO_LAST  "TRAILER!!!"
@@ -32,6 +33,7 @@ static int extract_file(read_contents reader, int fd, const char *base_path, con
             char buffer[1024];
             size_t to_read = len > sizeof(buffer) ? sizeof(buffer) : len;
             ssize_t num_read = reader(fd, buffer, to_read);
+
             if (num_read < 0 || (size_t) num_read != to_read) {
                 bw_warn("Error reading CPIO file data?");
                 return -1;

@@ -21,6 +21,7 @@ endif
 PREFIX = $(MIX_APP_PATH)/launcher
 BUILD  = $(MIX_APP_PATH)/obj
 
+#CFLAGS ?= -O2 -Wall -Wextra -Wno-unused-parameter -pedantic -fPIC -static -static-libgcc -static-libstdc++
 CFLAGS ?= -O2 -Wall -Wextra -Wno-unused-parameter -pedantic
 CFLAGS += -D_GNU_SOURCE
 LDFLAGS ?=
@@ -58,7 +59,7 @@ $(BUILD)/%.o: src/%.c
 	$(CC) -c $(CFLAGS) -o $@ $<
 
 $(PREFIX)/launcher: $(BAKEWARE_OBJECTS) $(ZSTD_OBJECTS)
-	$(CC) $^ $(LDFLAGS) -o $@
+	$(CC) $^ $(LDFLAGS) -pipe -Wl,-o$@
 	strip $@
 
 $(PREFIX) $(BUILD) $(ZSTD_BUILD_DIRS):
